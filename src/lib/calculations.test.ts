@@ -86,6 +86,44 @@ describe('calculateBreakevenResult', () => {
   })
 })
 
+describe('savings sign convention', () => {
+  it('savings_per_100km is positive when electricity is cheaper than fuel', () => {
+    const result = calculateBreakevenResult(17.4, 6.4, 1.72, {
+      home_price_ct_kwh: 32, public_ac_price_ct_kwh: null, public_dc_price_ct_kwh: null, source: 'test',
+    }, 0)
+    const home = result.scenarios[0]
+    expect(home.cost_per_100km).toBeLessThan(result.fuel_cost_per_100km)
+    expect(home.savings_per_100km).toBeGreaterThan(0)
+  })
+
+  it('savings_per_100km is negative when electricity is more expensive', () => {
+    const result = calculateBreakevenResult(17.4, 6.4, 1.72, {
+      home_price_ct_kwh: 90, public_ac_price_ct_kwh: null, public_dc_price_ct_kwh: null, source: 'test',
+    }, 0)
+    expect(result.scenarios[0].savings_per_100km).toBeLessThan(0)
+  })
+
+  it('scenario cost and savings are consistent with the fuel cost', () => {
+    const result = calculateBreakevenResult(17.4, 6.4, 1.72, {
+      home_price_ct_kwh: 32, public_ac_price_ct_kwh: 45, public_dc_price_ct_kwh: 79, source: 'test',
+    }, 10)
+    for (const s of result.scenarios) {
+      expect(s.savings_per_100km).toBeCloseTo(result.fuel_cost_per_100km - s.cost_per_100km, 6)
+    }
+  })
+
+  it('a scenario priced exactly at breakeven costs the same as fuel', () => {
+    const result = calculateBreakevenResult(17.4, 6.4, 1.72, {
+      home_price_ct_kwh: null, public_ac_price_ct_kwh: null, public_dc_price_ct_kwh: null, source: 'test',
+    }, 10)
+    const atBreakeven = evCostPer100km(
+      result.grid_consumption_kwh_per_100km,
+      result.breakeven_ct_kwh,
+    )
+    expect(atBreakeven).toBeCloseTo(result.fuel_cost_per_100km, 6)
+  })
+})
+
 describe('calculateAnnualCost', () => {
   it('100% EV share means only EV costs', () => {
     const r = calculateAnnualCost(15000, 100, 5.57, 11.0)
@@ -107,5 +145,11 @@ describe('calculateAnnualCost', () => {
   it('negative savings when EV is more expensive', () => {
     const r = calculateAnnualCost(15000, 50, 12.0, 11.0)
     expect(r.savings_annual).toBeLessThan(0)
+  })
+
+  it('savings equal the per-km cost delta over the electric share', () => {
+    const r = calculateAnnualCost(20000, 60, 5.0, 11.0)
+    // 60 % of 20 000 km = 12 000 km driven electrically, saving 6 EUR per 100 km
+    expect(r.savings_annual).toBeCloseTo((12000 / 100) * (11.0 - 5.0), 6)
   })
 })

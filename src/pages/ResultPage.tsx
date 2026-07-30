@@ -30,7 +30,7 @@ export function ResultPage() {
   function handleShare() {
     const text =
       `PumpOrPlug: Mein Breakeven liegt bei ${breakeven.toFixed(1)} ct/kWh` +
-      ` – darunter lohnt sich elektrisches Fahren! 🔌⚡\npumporplug.app`
+      ` – darunter lohnt sich elektrisches Fahren! 🔌⚡\npumporplug.xcience.net`
     if (navigator.share) {
       navigator.share({ title: 'PumpOrPlug', text })
     } else {

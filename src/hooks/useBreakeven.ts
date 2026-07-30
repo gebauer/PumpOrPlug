@@ -13,7 +13,10 @@ export function useBreakeven(
     if (
       ev_consumption_kwh_per_100km === null ||
       fuel_consumption_l_per_100km === null ||
-      fuel_price_eur_per_liter === null
+      fuel_price_eur_per_liter === null ||
+      ev_consumption_kwh_per_100km <= 0 ||
+      fuel_consumption_l_per_100km <= 0 ||
+      fuel_price_eur_per_liter <= 0
     ) {
       return null
     }

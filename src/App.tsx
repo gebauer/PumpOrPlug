@@ -19,7 +19,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       )}
       <header className="flex items-center justify-between px-4 py-4 border-b border-slate-800">
         <NavLink to="/" className="flex items-center gap-2">
-          <span className="text-xl">🔌⛽</span>
+          <img src="/favicon.svg" alt="" width={28} height={28} />
           <span className="font-bold tracking-tight">PumpOrPlug</span>
         </NavLink>
         <NavLink
@@ -32,6 +32,16 @@ function Layout({ children }: { children: React.ReactNode }) {
         </NavLink>
       </header>
       <main className="mx-auto max-w-md px-4 py-6">{children}</main>
+      <footer className="mx-auto max-w-md px-4 pb-8 pt-2 text-center text-xs text-slate-600">
+        <a
+          href="https://tools.xcience.net"
+          className="hover:text-slate-400"
+          target="_blank"
+          rel="noopener"
+        >
+          part of xcience tools ↗
+        </a>
+      </footer>
     </div>
   )
 }

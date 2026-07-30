@@ -71,7 +71,7 @@ export function FuelPage() {
         {/* Fresh API result */}
         {status.state === 'success' && !status.isStale && (
           <p className="text-xs text-green-400">
-            📍 Ø {status.stationCount} Tankstellen im Umkreis · Stand{' '}
+            📍 Ø der {status.stationCount} günstigsten Tankstellen im Umkreis · Stand{' '}
             {new Date(status.timestamp).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}
           </p>
         )}

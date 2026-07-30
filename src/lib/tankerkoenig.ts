@@ -28,6 +28,7 @@ export async function fetchNearbyPrice(
   coords: Coords,
   fuelType: TankerFuelType,
   radiusKm = 5,
+  limit = 5,
 ): Promise<{ averagePrice: number; stationCount: number; timestamp: string }> {
   const url = new URL(`${BASE_URL}/list.php`)
   url.searchParams.set('lat', String(coords.lat))
@@ -43,9 +44,11 @@ export async function fetchNearbyPrice(
   const data = (await res.json()) as TankerListResponse
   if (!data.ok) throw new Error('Tankerkönig API returned ok:false')
 
-  const priced = data.stations.filter((s) => typeof s.price === 'number') as Array<
+  const priced = (data.stations.filter((s) => typeof s.price === 'number') as Array<
     TankerStation & { price: number }
-  >
+  >)
+    .sort((a, b) => a.price - b.price)
+    .slice(0, limit)
 
   if (priced.length === 0) throw new Error('Keine Preisdaten für diesen Bereich')
 

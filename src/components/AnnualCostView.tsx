@@ -14,9 +14,10 @@ export function AnnualCostView({ result }: Props) {
   const [annualKm, setAnnualKm] = useState(15000)
   const [evSharePercent, setEvSharePercent] = useState(60)
 
-  // Use the cheapest below-breakeven scenario, or the first scenario
-  const referenceScenario =
-    result.scenarios.find((s) => s.isBelow) ?? result.scenarios[0]
+  const referenceScenario = result.scenarios.reduce<typeof result.scenarios[number] | undefined>(
+    (cheapest, s) => (!cheapest || s.price_ct_kwh < cheapest.price_ct_kwh ? s : cheapest),
+    undefined,
+  )
 
   if (!referenceScenario) return null
 
@@ -28,7 +29,7 @@ export function AnnualCostView({ result }: Props) {
   )
 
   const savingsColor = annual.savings_annual >= 0 ? 'text-green-400' : 'text-red-400'
-  const savingsSign = annual.savings_annual >= 0 ? '−' : '+'
+  const savingsSign = annual.savings_annual >= 0 ? '+' : '−'
 
   return (
     <div className="rounded-xl bg-slate-800/50 ring-1 ring-slate-700 overflow-hidden">

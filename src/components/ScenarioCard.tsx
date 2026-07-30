@@ -20,8 +20,8 @@ export function ScenarioCard({ scenario }: Props) {
           {icon} {scenario.cost_per_100km.toFixed(2)} €/100km
         </p>
         <p className={`text-xs font-mono ${scenario.savings_per_100km >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-          {scenario.savings_per_100km >= 0 ? '−' : '+'}
-          {Math.abs(scenario.savings_per_100km).toFixed(2)} €
+          {Math.abs(scenario.savings_per_100km).toFixed(2)} €{' '}
+          {scenario.savings_per_100km >= 0 ? 'gespart' : 'teurer'}
         </p>
       </div>
     </div>

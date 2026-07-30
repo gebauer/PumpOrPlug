@@ -52,24 +52,3 @@ export interface BreakevenResult {
   scenarios: ChargingScenario[]
 }
 
-export interface AnnualCostResult {
-  annual_km: number
-  ev_share_percent: number
-  fuel_cost_annual: number
-  ev_cost_annual: number
-  savings_annual: number
-  scenario_label: string
-}
-
-export interface VehicleFormData {
-  vehicle: Vehicle | null
-  ev_consumption_override: number | null
-  fuel_consumption_override: number | null
-}
-
-export interface AppState {
-  vehicleForm: VehicleFormData
-  fuelPriceEurPerLiter: number | null
-  electricityContext: ElectricityContext
-  tankerkoenigApiKey: string | null
-}

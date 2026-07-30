@@ -50,9 +50,6 @@ export const useStore = create<StoreState>()(
     }),
     {
       name: 'pumporplug-storage',
-      // Don't persist the API key in a serialised form visible to devtools —
-      // it already lives in localStorage via zustand/persist, which is fine,
-      // but we keep it out of the serialised object for clarity.
     },
   ),
 )
